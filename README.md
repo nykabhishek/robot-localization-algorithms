@@ -1,4 +1,4 @@
-# robotic_perception
+# Robotic Perception
 Implementation of algorithms for robotic perception.
 
 Algorithms include:
