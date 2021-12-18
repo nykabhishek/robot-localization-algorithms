@@ -1,5 +1,5 @@
 # Robotic Perception
-Implementation of algorithms for robotic perception.
+JUpyter Notebook implementation of algorithms for Robot perception.
 
 Algorithms include:
   - Monte Carlo Localization
