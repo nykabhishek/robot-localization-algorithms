@@ -4,6 +4,6 @@
 Jupyter Notebook implementation of algorithms for Robot perception.
 
 Algorithms include:
-  - Monte Carlo Localization
-  - Kalman Filter
-  - Extended Kalman filter
+  - `Monte Carlo Localization`
+  - `Kalman Filter`
+  - `Extended Kalman filter`
