@@ -1,6 +1,6 @@
 ## Extended Kalman Filter for Lidar and Radar Sensor Fusion
 
-An extended Kalman Filter implementation in `jupyter-notebook` for fusing lidar and radar sensor measurements for a **Constant Turn Rate and Velocity Vehicle Model (CTRV)**.
+An extended Kalman Filter implementation in `jupyter-notebook` for fusing lidar and radar sensor measurements for a **constant velocity and constant yaw rate vehicle model**. The yaw and yaw rate are propagated but not observable from the lidar and radar measurements, so they are not corrected by the measurement updates.
 
 **Data is received from two 'noisy' sensors:**
 - A LIDAR sensor that measures the position `(x, y)` in cartesian-coordinates.

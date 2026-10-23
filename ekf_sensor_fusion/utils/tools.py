@@ -1,5 +1,5 @@
 import numpy as np
-from math import sin, cos, sqrt
+from math import sin, cos, sqrt, pi
 
 def cartesian_to_polar(x, y, vx, vy, yaw, dyaw, THRESH = 0.0001):
   """   
@@ -45,16 +45,27 @@ def polar_to_cartesian(rho, phi, drho):
 
 def time_difference(t1, t2):
   """
-  Computes the time difference in microseconds (type: float) of two epoch times values in seconds (type: int)
+  Computes the time difference in seconds (type: float) of two epoch time values in microseconds (type: int)
   
   Args:
-    t1 : int - previous epoch time in seconds
-    t2 : int - current epoch time in seconds
+    t1 : int - previous epoch time in microseconds
+    t2 : int - current epoch time in microseconds
 
   Returns: a float - the time difference in seconds
   """
   return (t2 - t1) / 1000000.0
 
+
+def normalize_angle(angle):
+  """
+  Wraps an angle into the interval [-pi, pi)
+
+  Args:
+    angle : float - angle in radians
+
+  Returns: a float - the equivalent angle in radians within [-pi, pi)
+  """
+  return (angle + pi) % (2 * pi) - pi
 
 def get_RMSE(predictions, truths):
   """
@@ -86,14 +97,15 @@ def get_RMSE(predictions, truths):
   
   return px, py, vx, vy, yaw, dyaw
   
-def calculate_jacobian(px, py, vx, vy, yaw, dyaw, THRESH = 0.0001, ZERO_REPLACEMENT = 0.0001):
+def calculate_jacobian(px, py, vx, vy, yaw, dyaw, THRESH = 0.0001):
   """
-    Calculates the Jacobian given for four state variables
+    Calculates the Jacobian of the radar measurement function h(x) = (rho, phi, drho)
+    with respect to the six state variables
 
     Args:
-      px, py, vx, vy : floats - four state variables in the system 
+      px, py, vx, vy : floats - position and velocity state variables in the system
+      yaw, dyaw : floats - yaw and yaw rate (h(x) does not depend on them, kept for a uniform interface)
       THRESH - minimum value of squared distance to return a non-zero matrix
-      ZERO_REPLACEMENT - value to replace zero to avoid division by zero error
 
     Returns:
       H : the jacobian matrix expressed as a 3 x 6 numpy matrix with float values
@@ -117,10 +129,8 @@ def calculate_jacobian(px, py, vx, vy, yaw, dyaw, THRESH = 0.0001, ZERO_REPLACEM
     r31 = py * (vx * py - vy * px) / d_cubed
     r32 = px * (vy * px - vx * py) / d_cubed
 
-    r34 = (px * np.cos(yaw) + py * np.sin(yaw)) / d
-
     H = np.matrix([[r11, r12, 0, 0, 0, 0], 
                   [r21, r22, 0, 0, 0, 0], 
-                  [r31, r32, r11, r12, r34, 0]])
+                  [r31, r32, r11, r12, 0, 0]])
 
   return H
